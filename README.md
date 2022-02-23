@@ -1,6 +1,6 @@
 ## Cityscapes and Cityscapes-C
 
-This repository construct cityscapes-c dataset compatible with tensorflow_datasets for semantic segmentation.
+This repository builds cityscapes-c datasets compatible with tensorflow_datasets for semantic segmentation.
 
 ### Steps:
 

@@ -1,19 +1,17 @@
 ## Cityscapes and Cityscapes-C
 
-This repository builds cityscapes-c datasets compatible with tensorflow_datasets for semantic segmentation.
+This repository contains python and tensorflow code with instructions to download, and prepapre raw cityscapes and cityscapes-c datasets compatible with tensorflow_datasets.
 
 ### Steps:
 
 #### Download Cityscapes 
 
-Create a login and download cityscapes from https://www.cityscapes-dataset.com/
-For a semantic segmentation task download: gtFine_trainvaltest.zip and leftImg8bit_trainvaltest.zip
-The files should be placed in the tensorflow dataset download directory.
-This directory is by default set as ```$HOME$/tensorflow_datasets/downloads```
+To download the Ciyyscapes dataset, it is necessary to create a login to the website https://www.cityscapes-dataset.com. For the semantic segmentation cityscapes task, we can download the files: gtFine_trainvaltest.zip and leftImg8bit_trainvaltest.zip which contain the segmentation labels and the raw images. 
+The files should be placed in the tensorflow dataset download directory, which is by default set as ```$HOME$/tensorflow_datasets/downloads```
 
 #### Build/Process Cityscapes 
 
-To build the cityscapes dataset and create tf records using the tensorflow_datasets default builder run:
+To build the cityscapes dataset and create tf records using the tensorflow_datasets default builder run: <br> 
 ```
 import tensorflow_datasets as tfds
 dataset = 'cityscapes'
@@ -22,21 +20,20 @@ builder.download_and_prepare()
 ```
 #### Corrupt  Cityscapes 
 
-To corrupts cityscapes dataset (for the semantic_segmentation task) run <br> 
+To corrupts cityscapes dataset (for the semantic_segmentation task) run: <br> 
 ```
 ./src/transform_city.sh 
 ```
 
 #### Build/Process  Cityscapes-Corrupted
-To build the cityscapes-corrupted dataset and create tf records run <br>
+To build the cityscapes-corrupted dataset and create tf records run: <br>
 ```
 import tensorflow_datasets as tfds
 dataset ='cityscapes_corrupted/semantic_segmentation_gaussian_noise_2'
 builder = tfds.builder(dataset)
 builder.download_and_prepare()
 ```
-This command uses the custom dataset builder provided, and located in cityscapes_corrupted/cityscapes_corrupted.py
-The builder was constructed following the [TF Writing Custom Dataset Guide](https://www.tensorflow.org/datasets/add_dataset).
+This command uses the dataset builder in cityscapes_corrupted/cityscapes_corrupted.py, which  was constructed following the [TF Writing Custom Dataset Guide](https://www.tensorflow.org/datasets/add_dataset).
 
 ### References
 ```

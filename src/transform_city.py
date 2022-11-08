@@ -8,6 +8,8 @@ from PIL import Image
 import os
 from pathlib import Path
 IMG_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.ppm', '.bmp', '.pgm']
+import shutil
+from tqdm import tqdm
 
 
 def is_image_file(filename):
@@ -33,7 +35,7 @@ def pil_loader(path):
 def main(in_dir, out_dir, corruption, severity):
   in_dir = os.path.expanduser(in_dir)
   for (dirpath, dirnames, filenames) in os.walk(in_dir):
-    for filename in filenames:
+    for filename in tqdm(filenames):
       image_file = os.path.join(dirpath, filename)
       if is_image_file(image_file):
         save_path = os.path.join(out_dir, *image_file.rsplit('/',2)[1:])
@@ -44,6 +46,7 @@ def main(in_dir, out_dir, corruption, severity):
         Image.fromarray(np.uint8(corrupted)).save(save_path, quality=85, optimize=True)
       else:
         print('Could not corrupt {}'.format(image_file))
+        shutil(image_file, save_path)
 
 
 if __name__ == "__main__":

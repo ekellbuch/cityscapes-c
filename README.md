@@ -1,39 +1,66 @@
 ## Cityscapes and Cityscapes-C
 
-This repository contains python and tensorflow code with instructions to download, and prepapre raw cityscapes and cityscapes-c datasets compatible with tensorflow_datasets.
+This repository contains instructions to create the corrupted Cityscapes-Corrupted dataset with tensorflow.
 
 ### Steps:
 
-#### Download Cityscapes 
+#### 1. Download Cityscapes 
 
-To download the Ciyyscapes dataset, it is necessary to create a login to the website https://www.cityscapes-dataset.com. For the semantic segmentation cityscapes task, we can download the files: gtFine_trainvaltest.zip and leftImg8bit_trainvaltest.zip which contain the segmentation labels and the raw images. 
-The files should be placed in the tensorflow dataset download directory, which is by default set as ```$HOME$/tensorflow_datasets/downloads```
+To download the Cityscapes dataset:
+1. Create a login to the website https://www.cityscapes-dataset.com. <br>
+2. The cityscapes dataset supports multiple tasks. For the semantic segmentation task, download the files: [gtFine_trainvaltest.zip](https://www.cityscapes-dataset.com/file-handling/?packageID=1) and [leftImg8bit_trainvaltest.zip](https://www.cityscapes-dataset.com/file-handling/?packageID=3) which contain the segmentation labels and the raw images respectively. <br>
+3. Move the files ([gtFine_trainvaltest.zip](https://www.cityscapes-dataset.com/file-handling/?packageID=1) and [leftImg8bit_trainvaltest.zip](https://www.cityscapes-dataset.com/file-handling/?packageID=3)) to the manual download directory in tensorflow_datasets. For example, if you downloaded the files in the ``~/Downloads`` directory:
+```
+cd ~/Downloads
+mv gtFine_trainvaltest.zip ~/tensorflow_datasets/downloads/manual/
+mv leftImg8bit_trainvaltest.zip ~/tensorflow_datasets/downloads/manual/
 
-#### Build/Process Cityscapes 
+```
 
-To build the cityscapes dataset and create tf records using the tensorflow_datasets default builder run: <br> 
+#### 2. Create TF Records for Cityscapes
+Tensorflow records is the format tensorflow uses to read datasets.
+To create tf records for the cityscapes dataset using the files you just downloaded run: <br> 
 ```
 import tensorflow_datasets as tfds
 dataset = 'cityscapes'
 builder = tfds.builder(dataset)
 builder.download_and_prepare()
 ```
-#### Corrupt  Cityscapes 
+This step  will use the files in the manual directory and create the tf records using [cityscapes.py](https://github.com/tensorflow/datasets/blob/master/tensorflow_datasets/image/cityscapes.py) in the directory ``~/tensorflow_datasets``.
+To check if the tf records were created, run:
+```
+builder.as_dataset()
+```
+which should return a dictionary with the keys ``train``, ``test`` and ``validation``.
 
-To corrupts cityscapes dataset (for the semantic_segmentation task) run: <br> 
+#### 3. Corrupt  Cityscapes 
+
+To corrupt the Cityscapes dataset install [imagecorruptions](https://github.com/bethgelab/imagecorruptions) and run: <br> 
 ```
 ./src/transform_city.sh 
 ```
 
-#### Build/Process  Cityscapes-Corrupted
-To build the cityscapes-corrupted dataset and create tf records run: <br>
+This code applies multiple corruptions at different severity levels to the images in cityscapes and stores them in a new directory. 
+The images corrupted with gaussian noise with severity 1 will be stored in:
+``~/tensorflow_datasets/downloads/manual/leftImg8bit_trainvaltest_gaussian_noise-1``.
+
+#### 4. Create TF Records for Cityscapes-Corrupted
+To build tf records for the corrupted dataset using the corrupted images run [src/call_dataset.py](https://github.com/ekellbuch/cityscapes-c/blob/main/src/call_dataset.py).
+For example, to build the tf records for the gaussian noise corruption with severity 1 run: <br>
 ```
 import tensorflow_datasets as tfds
-dataset ='cityscapes_corrupted/semantic_segmentation_gaussian_noise_2'
+dataset ='cityscapes_corrupted/semantic_segmentation_gaussian_noise_1'
 builder = tfds.builder(dataset)
 builder.download_and_prepare()
 ```
-This command uses the dataset builder in cityscapes_corrupted/cityscapes_corrupted.py, which  was constructed following the [TF Writing Custom Dataset Guide](https://www.tensorflow.org/datasets/add_dataset).
+This step uses the dataset builder in [cityscapes_corrupted/cityscapes_corrupted.py](https://github.com/ekellbuch/cityscapes-c/blob/main/cityscapes_corrupted/cityscapes_corrupted.py), which  was constructed following the [TF Writing Custom Dataset Guide](https://www.tensorflow.org/datasets/add_dataset), to create tf records in the directory ``~/tensorflow_datasets``.
+
+To check if the tf records were created, run:
+```
+builder.as_dataset()
+```
+which should return a dictionary with the keys ``validation``.
+
 
 ### References
 ```

@@ -62,6 +62,9 @@ _DOWNLOAD_URL = "gs://ub-ekb/cityscapes_corrupted/raw_data/v.0.0"
 
 _CORRUPTIONS = [
     'gaussian_noise',
+    'fog',
+    'brightness',
+    'contrast',
 ]
 
 class CityscapesCorruptedConfig(tfds.core.BuilderConfig):

@@ -7,19 +7,29 @@ print(_DATASET_REGISTRY.keys())
 import numpy as np
 import matplotlib.pyplot as plt
 
-#%%
+import tensorflow_datasets as tfds
 import sys
 sys.path.append("..")
-sys.path.append('../ade20k_corrupted')
-import tensorflow_datasets as tfds
 from ade20k_corrupted import ADE20kCorrupted
 print(ADE20kCorrupted.name)
+from ade20k_corrupted import ADE20k
+print(ADE20k.name)
 # set environment variable:
 # https://github.com/tensorflow/datasets/issues/3903
 import os
 os.environ['TFDS_DATA_DIR'] = os.environ.get('TFDS_DATA_DIR',
                            os.path.join(os.environ.get('HOME'), 'tensorflow_datasets'))
 
+#%%
+import tensorflow_datasets as tfds
+dataset='ad_e20k'
+train_split='train[:32]'
+data_dir='gs://ub-ekb/tensorflow_datasets/ad_e20k/tfrecords/v.0.0'
+tfds.builder(dataset, data_dir=data_dir, try_gcs=True)
+#tfds.load(dataset)
+#%%
+
+sys.path.append('../ade20k_corrupted')
 #%%
 
 from ade20k_corrupted import ADE20kCorrupted

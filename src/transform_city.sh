@@ -21,9 +21,10 @@ CITYSCAPES_DIR="${CITYSCAPES_EXTRACTED_DIR}/ZIP.${ZIPPED_FOLDER_NAME}.zip/${UNZI
 # saturate
 
 # Process each corruption:
-for corruption in "gaussian_noise" "fog" "brightness" "contrast"
+#for corruption in "gaussian_noise" "fog" "brightness" "contrast"
+for corruption in  "fog"
 do
-  for severity in 1 2 3 4 5
+  for severity in  2 3 4 5
 do
   # Create a new directory for this corruption and severity which will be in $MANUAL_DIR
   new_file="${ZIPPED_FOLDER_NAME}_${corruption}-${severity}"
@@ -34,10 +35,10 @@ do
   python transform_city.py $CITYSCAPES_DIR $CITYSCAPES_C_OUT $corruption $severity
 
   # zip the directory with corrupted images
-  pushd ${MANUAL_DIR}
+  pushd ${DATADIR}
   zipped_file="${new_file}.zip"
-  zip -r $zipped_file $new_file
-  rm -rf $new_file
+  zip -r $zipped_file leftImg8bit
+  mv $zipped_file ..
   popd
   done
 done

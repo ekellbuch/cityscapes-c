@@ -8,7 +8,7 @@ CLOUD_FOLDER_NAME="gs://ub-ekb/ade20k_c/raw_data/v.0.0/"
 
 # Read images for semantic_segmentation task:
 # we do not need to corrupt the labels, only the images
-ZIPPED_FOLDER_NAME="streethazard"
+ZIPPED_FOLDER_NAME="street_hazards"
 UNZIPPED_FOLDER_NAME="images"
 
 MANUAL_DIR="${HOME}/tensorflow_datasets/downloads/manual"
@@ -31,7 +31,7 @@ OUTPUT_NAME="ADEChallengeData2016"
 #for corruption in "shot_noise" "snow" "frost" "brightness" "contrast"
 
 
-for corruption in "brightness"
+for corruption in "brightness" "contrast" "gaussian_noise" "fog"
 do
   for severity in 1 2 3 4 5
   do

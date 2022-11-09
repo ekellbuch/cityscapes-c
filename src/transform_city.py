@@ -10,7 +10,8 @@ from pathlib import Path
 IMG_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.ppm', '.bmp', '.pgm']
 import shutil
 from tqdm import tqdm
-
+import multiprocessing
+from functools import partial
 
 def is_image_file(filename):
   """Checks if a file is an image.
@@ -35,19 +36,23 @@ def pil_loader(path):
 def main(in_dir, out_dir, corruption, severity):
   in_dir = os.path.expanduser(in_dir)
   for (dirpath, dirnames, filenames) in os.walk(in_dir):
-    for filename in tqdm(filenames):
-      image_file = os.path.join(dirpath, filename)
-      if is_image_file(image_file):
-        save_path = os.path.join(out_dir, *image_file.rsplit('/',2)[1:])
-        if not Path(save_path).parent.exists():
-          os.makedirs(str(Path(save_path).parent))
-        image = pil_loader(image_file)
-        corrupted = corrupt(image, corruption_name=corruption, severity=severity)
-        Image.fromarray(np.uint8(corrupted)).save(save_path, quality=85, optimize=True)
-      else:
-        print('Could not corrupt {}'.format(image_file))
-        shutil(image_file, save_path)
+    transform_files = partial (transform_file, dirpath, out_dir, corruption, severity)
+    pool = multiprocessing.Pool(max(1, multiprocessing.cpu_count() - 1))
+    zip(*pool.map(transform_files, filenames))
 
+def transform_file(dirpath, out_dir, corruption, severity, filename):
+  image_file = os.path.join(dirpath, filename)
+  if is_image_file(image_file):
+    save_path = os.path.join(out_dir, *image_file.rsplit('/', 2)[1:])
+    if not Path(save_path).parent.exists():
+      os.makedirs(str(Path(save_path).parent))
+    image = pil_loader(image_file)
+    corrupted = corrupt(image, corruption_name=corruption, severity=severity)
+    Image.fromarray(np.uint8(corrupted)).save(save_path, quality=85, optimize=True)
+  else:
+    print('Could not corrupt {}'.format(image_file))
+    #shutil(image_file, save_path)
+  return
 
 if __name__ == "__main__":
     fire.Fire(main)

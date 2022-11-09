@@ -1,4 +1,6 @@
 import tensorflow_datasets as tfds
+import sys
+sys.path.append("..")
 
 dataset = 'cityscapes'
 builder = tfds.builder(dataset)

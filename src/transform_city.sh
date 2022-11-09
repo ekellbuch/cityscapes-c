@@ -21,10 +21,9 @@ CITYSCAPES_DIR="${CITYSCAPES_EXTRACTED_DIR}/ZIP.${ZIPPED_FOLDER_NAME}.zip/${UNZI
 # saturate
 
 # Process each corruption:
-#for corruption in "gaussian_noise" "fog" "brightness" "contrast"
-for corruption in  "fog"
+for corruption in "gaussian_noise" "fog" "brightness" "contrast"
 do
-  for severity in  2 3 4 5
+  for severity in  1 2 3 4 5
 do
   # Create a new directory for this corruption and severity which will be in $MANUAL_DIR
   new_file="${ZIPPED_FOLDER_NAME}_${corruption}-${severity}"

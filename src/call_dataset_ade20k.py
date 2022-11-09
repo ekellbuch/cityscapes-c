@@ -32,9 +32,9 @@ sys.path.append('../ade20k_corrupted')
 
 from ade20k_corrupted import ADE20kCorrupted
 corruptions = ['gaussian_noise','fog','brightness','contrast']
-for corrution in corruptions:
+for corruption in corruptions:
     for noise in range(1, 6):
-        dataset_name = 'ad_e20k_corrupted/ade20k_{}_{}'.format(corruptions,noise)
+        dataset_name = 'ad_e20k_corrupted/ade20k_{}_{}'.format(corruption,noise)
         ds_info = tfds.builder(dataset_name).info
         builder = tfds.builder(dataset_name)
         builder.download_and_prepare()

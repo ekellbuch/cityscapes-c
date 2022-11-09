@@ -45,7 +45,8 @@ def transform_file(dirpath, out_dir, corruption, severity, filename):
   if is_image_file(image_file):
     save_path = os.path.join(out_dir, *image_file.rsplit('/', 2)[1:])
     if not Path(save_path).parent.exists():
-      os.makedirs(str(Path(save_path).parent))
+      try:
+        os.makedirs(str(Path(save_path).parent))
     image = pil_loader(image_file)
     corrupted = corrupt(image, corruption_name=corruption, severity=severity)
     Image.fromarray(np.uint8(corrupted)).save(save_path, quality=85, optimize=True)

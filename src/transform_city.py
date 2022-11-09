@@ -38,7 +38,8 @@ def main(in_dir, out_dir, corruption, severity):
   for (dirpath, dirnames, filenames) in os.walk(in_dir):
     transform_files = partial (transform_file, dirpath, out_dir, corruption, severity)
     pool = multiprocessing.Pool(max(1, multiprocessing.cpu_count() - 1))
-    zip(*pool.map(transform_files, filenames))
+    if len(filenames) >=1:
+      pool.map(transform_files, filenames)
 
 def transform_file(dirpath, out_dir, corruption, severity, filename):
   image_file = os.path.join(dirpath, filename)

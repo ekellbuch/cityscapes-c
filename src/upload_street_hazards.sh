@@ -6,11 +6,11 @@ MANUAL_DIR="${HOME}/tensorflow_datasets/street_hazards_corrupted"
 
 # export TFDS_DATA_DIR="${HOME}/tensorflow_datasets"
 #for corruption in "gaussian_noise" #"shot_noise" "snow" "frost" "brightness" "contrast"
-for corruption in "fog" "brightness" "contrast" "gaussian_noise"
+for corruption in "gaussian_noise" "fog" "contrast" "brightness"
 do
   for severity in 1 2 3 4 5
   do
-  new_file="ade20k_${corruption}_${severity}"
+  new_file="street_hazards_${corruption}_${severity}"
   cloud_file="${CLOUD_FOLDER_NAME}/${new_file}"
   local_file="${MANUAL_DIR}/${new_file}"
   echo "${local_file}"

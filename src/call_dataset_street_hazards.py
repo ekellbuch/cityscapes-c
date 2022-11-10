@@ -8,7 +8,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import tensorflow_datasets as tfds
-from street_hazards_corrupted import StreetHazardsCorrupted
 print(StreetHazardsCorrupted.name)
 # set environment variable:
 # https://github.com/tensorflow/datasets/issues/3903
@@ -27,7 +26,7 @@ tfds.builder(dataset) #, data_dir=data_dir, try_gcs=True)
 tfds.load(dataset)
 #%%
 
-
+from street_hazards_corrupted import StreetHazardsCorrupted
 corruptions = ['gaussian_noise','fog','brightness','contrast']
 for corruption in corruptions:
     for noise in range(1, 6):

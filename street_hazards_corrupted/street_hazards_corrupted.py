@@ -119,9 +119,9 @@ class StreetHazardsCorrupted(tfds.core.GeneratorBasedBuilder):
 
   def _split_generators(self, dl_manager):
     dl_paths = {}
-    dl_paths['images'] = os.path.join(dl_manager._extract_dir, 'street_hazards_{}_{}/train'.format(self.builder_config.corruption, self.builder_config.severity))
+    dl_paths['images'] = os.path.join(dl_manager._extract_dir, 'street_hazards_{}-{}/train'.format(self.builder_config.corruption, self.builder_config.severity))
     dl_paths['annotations'] = os.path.join(dl_manager._extract_dir, 'street_hazards/train')
-    dl_paths['test_images'] = os.path.join(dl_manager._extract_dir, 'street_hazards_{}_{}/test'.format(self.builder_config.corruption, self.builder_config.severity))
+    dl_paths['test_images'] = os.path.join(dl_manager._extract_dir, 'street_hazards_{}-{}/test'.format(self.builder_config.corruption, self.builder_config.severity))
     dl_paths['test_annotations'] = os.path.join(dl_manager._extract_dir, 'street_hazards/test')
 
     if any(not tf.io.gfile.exists(z) for z in dl_paths.values()):
